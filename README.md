@@ -5,3 +5,12 @@
 
 `http://localhost:5050/flow/{ticker}` 
 
+aws dynamodb list-tables --endpoint-url=http://localhost:4566
+
+aws dynamodb create-table \
+    --table-name OptionsFlow \
+    --attribute-definitions AttributeName=PK,AttributeType=S AttributeName=SK,AttributeType=S \
+    --key-schema AttributeName=PK,KeyType=HASH AttributeName=SK,KeyType=RANGE \
+    --billing-mode PAY_PER_REQUEST \
+    --endpoint-url http://localhost:4566 \
+    --region us-east-2
