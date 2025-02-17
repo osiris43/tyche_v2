@@ -1,22 +1,23 @@
-# Use official Python base image
-FROM python:3.11
+FROM python:3.11-slim as builder
 
-# Set the working directory inside the container
 WORKDIR /app
+COPY requirements/prod.txt .
+RUN pip install --no-cache-dir -r prod.txt p
 
-# Copy project files into the container
+# Final container
+FROM python:3.11-slim
+WORKDIR /app
+COPY --from=builder /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.11/site-packages
 COPY . .
-
-# Install dependencies
-RUN pip install --no-cache-dir -r requirements/prod.txt 
 
 # Set environment variables
 ENV FLASK_APP=tyche.py
 ENV FLASK_ENV=development
 ENV DYNAMODB_ENDPOINT=http://localstack:4566
+ENV FLASK_RUN_PORT=5050  
 
-# Expose port 5050 for Flask
-EXPOSE 5050
+# Expose ports (for both local development and deployment)
+EXPOSE 5050 80 443
 
-# Default command to run the app
-CMD ["flask", "run", "--host=0.0.0.0", "--port=5050"]
+# Default command to run the app, using an environment variable for port
+CMD ["flask", "run", "--host=0.0.0.0", "--port=${FLASK_RUN_PORT}"]
