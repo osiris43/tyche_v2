@@ -2,7 +2,7 @@ FROM python:3.11-slim as builder
 
 WORKDIR /app
 COPY requirements/prod.txt .
-RUN pip install --no-cache-dir -r prod.txt p
+RUN pip install --no-cache-dir -r prod.txt
 
 # Final container
 FROM python:3.11-slim
