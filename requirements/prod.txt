@@ -12,6 +12,7 @@ dill==0.3.6
 dnslib==0.9.25
 dnspython==2.7.0
 ecdsa==0.19.0
+Flask==3.1.0
 idna==3.10
 itsdangerous==2.2.0
 Jinja2==3.1.5
