@@ -14,10 +14,9 @@ COPY . .
 ENV FLASK_APP=tyche.py
 ENV FLASK_ENV=development
 ENV DYNAMODB_ENDPOINT=http://localstack:4566
-ENV FLASK_RUN_PORT=5050  
 
 # Expose ports (for both local development and deployment)
-EXPOSE 5050 80 443
+EXPOSE 5050 
 
 # Default command to run the app, using an environment variable for port
-CMD ["python", "-m", "flask", "run", "--host=0.0.0.0", "--port=${FLASK_RUN_PORT}"]
+CMD ["python", "tyche.py"]
