@@ -33,7 +33,7 @@ services:
       - "5050:5050"
     volumes:
       - .:/app
-    command: flask run --host=0.0.0.0 --port=5050
+    command: gunicorn -w 4 -b 0.0.0.0:5050 tyche:app
 
 networks:
   ls:
