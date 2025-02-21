@@ -5,6 +5,11 @@ main_bp = Blueprint("main", __name__)
 
 @main_bp.route("/")
 def home():
+    table = current_app.dynamodb.Table("OptionsFlow")
+    response = table.query(
+        KeyConditionExpression="PK = :symbol",
+        ExpressionAttributeValues={":symbol": f"Symbol#CLF"},
+    )
     return render_template("index.html")
 
 
