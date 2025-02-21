@@ -9,7 +9,9 @@ def create_app():
 
     # Load Configuration
     app.config.from_object("config.Config")
+    print(f"Config Object: {app.config}")
 
+    print(f"Dynamo Env: {os.getenv("DYNAMODB_ENDPOINT")}")
     # Initialize DynamoDB connection
     app.dynamodb = boto3.resource(
         "dynamodb",
