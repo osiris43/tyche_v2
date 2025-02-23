@@ -7,6 +7,8 @@ RUN pip install --no-cache-dir -r prod.txt
 COPY . .
 
 # Set environment variables
+ENV AWS_ACCESS_KEY_ID=""
+ENV AWS_SECRET_ACCESS_KEY=""
 ENV FLASK_APP=tyche.py
 ENV FLASK_ENV=production
 ENV DYNAMODB_ENDPOINT=http://localstack:4566

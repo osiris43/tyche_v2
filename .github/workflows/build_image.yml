@@ -30,6 +30,9 @@ jobs:
           IMAGE_TAG="$DATE-$SHORT_SHA"
 
           echo "Using IMAGE_TAG: $IMAGE_TAG"
+          echo "ECR_REGISTRY=$ECR_REGISTRY" >> $GITHUB_ENV
+          echo "ECR_REPOSITORY=$ECR_REPOSITORY" >> $GITHUB_ENV
+          echo "IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_ENV
 
           # Build and push the image with the generated tag
           docker build --no-cache -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
@@ -38,3 +41,29 @@ jobs:
           # Optionally, tag the latest image as well
           docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:latest
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+      - name: Deploy Container to Lightsail
+        env:
+          AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY}}
+          AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_KEY }}
+          DYNAMO_ENDPOINT: ${{secrets.DYNAMO_ENDPOINT}}
+          AWS_REGION: us-east-2
+        run: |
+          echo "ACCESS_KEY: $AWS_ACCESS_KEY_ID"
+          aws lightsail create-container-service-deployment \
+            --service-name tyche \
+            --region $AWS_REGION \
+            --containers '{
+              "tyche": {
+                "image": "'"$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"'",
+                "environment": {
+                  "AWS_ACCESS_KEY_ID": "'"$AWS_ACCESS_KEY"'",
+                  "AWS_SECRET_ACCESS_KEY": "'"$AWS_SECRET_KEY"'",
+                  "AWS_REGION": "'"$AWS_REGION"'",
+                  "DYNAMODB_ENDPOINT": "'"$DYNAMODB_ENDPOINT"'"
+                },
+                "ports": {
+                  "5050": "HTTP" 
+                }
+              }
+            }' \
+            --public-endpoint '{"containerName": "tyche", "containerPort": 5050}'

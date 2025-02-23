@@ -5,7 +5,7 @@ main_bp = Blueprint("main", __name__)
 
 @main_bp.route("/")
 def home():
-    table = current_app.dynamodb.Table("OptionsFlow")
+    table = current_app.dynamodb.Table("tyche")
     response = table.query(
         KeyConditionExpression="PK = :symbol",
         ExpressionAttributeValues={":symbol": f"Symbol#CLF"},
@@ -17,7 +17,7 @@ def home():
 # def track_option():
 #     """Endpoint to track new options flow"""
 #     data = request.json
-#     table = current_app.dynamodb.Table("OptionsFlow")
+#     table = current_app.dynamodb.Table("tyche")
 #     table.put_item(Item=data)
 #     return jsonify({"message": "Option tracked"}), 201
 
@@ -25,7 +25,7 @@ def home():
 # @main_bp.route("/flow/<symbol>", methods=["GET"])
 # def get_option_flow(symbol):
 #     """Fetch option flow for a given symbol"""
-#     table = current_app.dynamodb.Table("OptionsFlow")
+#     table = current_app.dynamodb.Table("tyche")
 #     response = table.query(
 #         KeyConditionExpression="PK = :symbol",
 #         ExpressionAttributeValues={":symbol": f"Symbol#{symbol}"},
