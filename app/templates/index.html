@@ -7,5 +7,17 @@
 </head>
 <body>
     <h1>Flask App is Running!</h1>
+
+    <h2>Items Found: {{ data | length }}</h2>
+
+    {% if data %}
+        <ul>
+            {% for item in data %}
+                <li>{{ item }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No items found.</p>
+    {% endif %}
 </body>
 </html>
