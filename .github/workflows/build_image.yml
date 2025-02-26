@@ -47,6 +47,7 @@ jobs:
           AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_KEY }}
           DYNAMO_ENDPOINT: ${{secrets.DYNAMO_ENDPOINT}}
           AWS_REGION: us-east-2
+          API_TOKEN: ${{secrets.API_TOKEN}}
         run: |
           echo "ACCESS_KEY: $AWS_ACCESS_KEY_ID"
           aws lightsail create-container-service-deployment \
@@ -59,6 +60,7 @@ jobs:
                   "AWS_ACCESS_KEY_ID": "'"$AWS_ACCESS_KEY"'",
                   "AWS_SECRET_ACCESS_KEY": "'"$AWS_SECRET_KEY"'",
                   "AWS_REGION": "'"$AWS_REGION"'",
+                  "API_TOKEN": "'"$API_TOKEN"'",
                   "DYNAMODB_ENDPOINT": "'"$DYNAMODB_ENDPOINT"'"
                 },
                 "ports": {
