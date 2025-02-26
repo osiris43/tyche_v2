@@ -12,6 +12,7 @@ ENV AWS_SECRET_ACCESS_KEY=""
 ENV FLASK_APP=tyche.py
 ENV FLASK_ENV=production
 ENV DYNAMODB_ENDPOINT=http://localstack:4566
+ENV API_TOKEN=dummy_token
 
 # Expose ports (for both local development and deployment)
 EXPOSE 5050

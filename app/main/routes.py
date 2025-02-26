@@ -1,6 +1,7 @@
 from boto3.dynamodb.conditions import Key
 from flask import Blueprint, request, jsonify, current_app, render_template
 import time
+import os
 
 main_bp = Blueprint("main", __name__)
 
@@ -38,6 +39,16 @@ def home():
 @main_bp.route("/track", methods=["POST"])
 def track_option():
     """Endpoint to track new options flow"""
+    # Get token from environment
+    expected_token = os.getenv("API_SECRET_TOKEN")
+
+    # Extract the token from the request headers
+    provided_token = request.headers.get("Authorization")
+
+    # Check if the token is valid
+    if not provided_token or provided_token != f"Bearer {expected_token}":
+        return jsonify({"error": "Unauthorized"}), 401
+
     data = request.json
     table = current_app.dynamodb.Table("tyche")
 
